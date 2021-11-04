@@ -7,8 +7,24 @@ const jwt = require("jsonwebtoken");
 
 const app = express(); 
 
-app.get("/", (req, res) => {
+app.use(express.json());
+
+const User = require('./models/User.js'); 
+
+app.get("/api", (req, res) => {
     res.status(200).json({msg: 'Bem Vindo a Nossa API'});
+})
+
+app.post("/api/auth/register", async (req, res) => {
+
+    const { name, mail, password, confirmPassword } = req.body;
+
+    if (!name) {
+        return res.status(400).json({
+            msg: "Name is Empty!"
+        })
+    }
+
 })
 
 const db_user = process.env.DB_USER;
@@ -19,7 +35,10 @@ mongoose.connect(`mongodb+srv://${db_user}:${db_pass}@cluster0.clpcr.mongodb.net
     .then( () => {
         app.listen(3000);
         console.log('Connected Successfull!');
+
 }).catch((err) => {
     console.log(err);
 })
+
+
 
